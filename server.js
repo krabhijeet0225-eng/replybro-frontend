@@ -20,7 +20,7 @@ app.use(
 );
 
 // Static frontend
-app.use(express.static(__dirname));
+app.use(express.static("assets-folder"));
 
 // Demo user
 const USERS = {
