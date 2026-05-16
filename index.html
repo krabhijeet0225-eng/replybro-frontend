@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReplyBro SaaS</title>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,20 +14,25 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #333;
         }
+
         .container {
             background: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
+
         h1 {
             text-align: center;
             color: #667eea;
         }
+
         .section {
             margin: 20px 0;
         }
-        input, textarea {
+
+        input,
+        textarea {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -34,6 +40,7 @@
             border-radius: 5px;
             font-family: inherit;
         }
+
         button {
             width: 100%;
             padding: 12px;
@@ -46,9 +53,11 @@
             font-size: 16px;
             font-weight: bold;
         }
+
         button:hover {
             background: #764ba2;
         }
+
         .response {
             background: #f0f0f0;
             padding: 15px;
@@ -57,74 +66,158 @@
             white-space: pre-wrap;
             word-break: break-word;
         }
+
         .error {
             color: #e74c3c;
         }
+
         .success {
             color: #27ae60;
         }
     </style>
 </head>
+
 <body>
+
     <div class="container">
+
         <h1>🚀 ReplyBro SaaS</h1>
-        
+
         <div class="section">
+
             <h3>Login</h3>
-            <input type="text" id="username" placeholder="Username (admin)" value="admin">
-            <input type="password" id="password" placeholder="Password (1234)" value="1234">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Username (admin)"
+                value="admin"
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Password (1234)"
+                value="1234"
+            >
+
             <button onclick="login()">Login</button>
+
             <div id="loginResponse"></div>
+
         </div>
 
         <div class="section">
+
             <h3>Generate AI Reply</h3>
-            <textarea id="prompt" placeholder="Enter your prompt here..." rows="4"></textarea>
+
+            <textarea
+                id="prompt"
+                placeholder="Enter your prompt here..."
+                rows="4"
+            ></textarea>
+
             <button onclick="generate()">Generate</button>
+
             <div id="generateResponse"></div>
+
         </div>
+
     </div>
 
     <script>
+
         async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const responseDiv = document.getElementById('loginResponse');
+
+            const username =
+                document.getElementById('username').value;
+
+            const password =
+                document.getElementById('password').value;
+
+            const responseDiv =
+                document.getElementById('loginResponse');
 
             try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
+
+                const response = await fetch(
+                    'https://replybro-frontend.vercel.app/login',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username,
+                            password
+                        })
+                    }
+                );
+
                 const data = await response.json();
-                responseDiv.innerHTML = `<div class="${data.success ? 'success' : 'error'}">${JSON.stringify(data, null, 2)}</div>`;
+
+                responseDiv.innerHTML =
+                    `<div class="${data.success ? 'success' : 'error'}">
+                        ${JSON.stringify(data, null, 2)}
+                    </div>`;
+
             } catch (err) {
-                responseDiv.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+
+                responseDiv.innerHTML =
+                    `<div class="error">
+                        Error: ${err.message}
+                    </div>`;
             }
         }
 
         async function generate() {
-            const prompt = document.getElementById('prompt').value;
-            const responseDiv = document.getElementById('generateResponse');
+
+            const prompt =
+                document.getElementById('prompt').value;
+
+            const responseDiv =
+                document.getElementById('generateResponse');
 
             if (!prompt) {
-                responseDiv.innerHTML = '<div class="error">Please enter a prompt</div>';
+
+                responseDiv.innerHTML =
+                    '<div class="error">Please enter a prompt</div>';
+
                 return;
             }
 
             try {
-                const response = await fetch('/generate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt })
-                });
+
+                const response = await fetch(
+                    'https://replybro-frontend.vercel.app/generate',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            prompt
+                        })
+                    }
+                );
+
                 const data = await response.json();
-                responseDiv.innerHTML = `<div class="success">${JSON.stringify(data, null, 2)}</div>`;
+
+                responseDiv.innerHTML =
+                    `<div class="success">
+                        ${JSON.stringify(data, null, 2)}
+                    </div>`;
+
             } catch (err) {
-                responseDiv.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+
+                responseDiv.innerHTML =
+                    `<div class="error">
+                        Error: ${err.message}
+                    </div>`;
             }
         }
+
     </script>
+
 </body>
 </html>
