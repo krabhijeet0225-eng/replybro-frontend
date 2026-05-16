@@ -6,12 +6,12 @@ require("dotenv").config();
 
 const app = express();
 
-// ---------------- SECURITY ----------------
+// SECURITY
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// limit requests (anti abuse)
+// Rate limit
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -19,20 +19,20 @@ app.use(
   })
 );
 
-// Serve static files
-app.use(express.static("public"));
+// Static frontend
+app.use(express.static(__dirname));
 
-// ---------------- SIMPLE AUTH (demo SaaS) ----------------
+// Demo user
 const USERS = {
   admin: "1234",
 };
 
-// ---------------- HOME ----------------
+// HOME
 app.get("/", (req, res) => {
-  res.send("🚀 SaaS Running Securely");
+  res.sendFile(__dirname + "/index.html");
 });
 
-// ---------------- LOGIN ----------------
+// LOGIN
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -44,20 +44,23 @@ app.post("/login", (req, res) => {
     });
   }
 
-  res.status(401).json({ success: false, message: "Invalid credentials" });
+  res.status(401).json({
+    success: false,
+    message: "Invalid credentials",
+  });
 });
 
-// ---------------- AI GENERATE (Mock / Gemini ready) ----------------
+// GENERATE
 app.post("/generate", async (req, res) => {
   const { prompt } = req.body;
 
   if (!prompt) {
-    return res.status(400).json({ error: "Prompt required" });
+    return res.status(400).json({
+      error: "Prompt required",
+    });
   }
 
   try {
-    // 👉 Yaha tu Gemini API connect karega later
-    // Example placeholder response:
     const reply =
       "AI Reply: " +
       prompt +
@@ -65,12 +68,16 @@ app.post("/generate", async (req, res) => {
 
     res.json({ reply });
   } catch (err) {
-    res.status(500).json({ error: "Server error", details: err.message });
+    res.status(500).json({
+      error: "Server error",
+      details: err.message,
+    });
   }
 });
 
-// ---------------- START SERVER ----------------
+// START SERVER
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log("🚀 Server running on port " + PORT);
-});
+});G
