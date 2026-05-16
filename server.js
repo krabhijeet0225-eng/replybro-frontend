@@ -44,7 +44,10 @@ app.post("/login", (req, res) => {
     });
   }
 
-  res.status(401).json({ success: false, message: "Invalid credentials" });
+  res.status(401).json({
+    success: false,
+    message: "Invalid credentials",
+  });
 });
 
 // ---------------- AI GENERATE (Mock / Gemini ready) ----------------
@@ -52,12 +55,13 @@ app.post("/generate", async (req, res) => {
   const { prompt } = req.body;
 
   if (!prompt) {
-    return res.status(400).json({ error: "Prompt required" });
+    return res.status(400).json({
+      error: "Prompt required",
+    });
   }
 
   try {
-    // 👉 Yaha tu Gemini API connect karega later
-    // Example placeholder response:
+    // 👉 Gemini API later yaha connect hoga
     const reply =
       "AI Reply: " +
       prompt +
@@ -65,10 +69,11 @@ app.post("/generate", async (req, res) => {
 
     res.json({ reply });
   } catch (err) {
-    res.status(500).json({ error: "Server error", details: err.message });
+    res.status(500).json({
+      error: "Server error",
+      details: err.message,
+    });
   }
 });
 
-// ---------------- START SERVER ----------------
 module.exports = app;
-
